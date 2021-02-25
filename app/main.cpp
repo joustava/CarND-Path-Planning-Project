@@ -5,13 +5,29 @@
 #include <vector>
 #include "Eigen/Core"
 #include "Eigen/QR"
-#include "helpers.hpp"
 #include <nlohmann/json.hpp>
+
+#include "Planner.hpp"
 
 // for convenience
 using nlohmann::json;
 using std::string;
 using std::vector;
+
+// Checks if the SocketIO event has JSON data.
+// If there is data the JSON object in string format will be returned,
+//   else the empty string "" will be returned.
+string hasData(string s) {
+  auto found_null = s.find("null");
+  auto b1 = s.find_first_of("[");
+  auto b2 = s.find_first_of("}");
+  if (found_null != string::npos) {
+    return "";
+  } else if (b1 != string::npos && b2 != string::npos) {
+    return s.substr(b1, b2 - b1 + 2);
+  }
+  return "";
+}
 
 int main() {
   uWS::Hub h;
@@ -90,13 +106,15 @@ int main() {
 
           json msgJson;
 
-          vector<double> next_x_vals;
-          vector<double> next_y_vals;
+          vector<double> next_x_vals = planX(car_x, car_yaw);
+          vector<double> next_y_vals = planY(car_y, car_yaw);;
 
           /**
            * TODO: define a path made up of (x,y) points that the car will visit
            *   sequentially every .02 seconds
            */
+
+         
 
 
           msgJson["next_x"] = next_x_vals;

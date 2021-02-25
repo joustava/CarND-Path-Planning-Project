@@ -9,7 +9,7 @@ project(path_planner
 
 # create target variables
 set(APP_NAME ${PROJECT_NAME})
-#  set(LIB_NAME ${PROJECT_NAME}_lib)
+set(LIB_NAME ${PROJECT_NAME}_lib)
 #  set(TEST_LIB_NAME ${LIB_NAME}_test)
 
 # set build flags
@@ -32,7 +32,7 @@ link_directories(/usr/local/Cellar/libuv/1.41.0/lib/)
 endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin") 
 
 # include CMakeList rules for lib, test and app targets.
-# add_subdirectory(src)
+add_subdirectory(src)
 # add_subdirectory(test)
 add_subdirectory(app)
 # Eigen library supports cmake (cannot get FetchContent working at this time)
