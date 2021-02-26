@@ -20,11 +20,29 @@ double deg2rad(double x) { return x * pi() / 180; }
 double rad2deg(double x) { return x * 180 / pi(); }
 
 // Calculate distance between two points
+
+/**
+ * @brief Calculate the Euclidian distance between two points
+ * 
+ * @param x1 x component of point 1
+ * @param y1 y component of point 1
+ * @param x2 x component of point 2
+ * @param y2 y component of point 2
+ * @return double distance
+ */
 double distance(double x1, double y1, double x2, double y2) {
   return sqrt((x2-x1)*(x2-x1)+(y2-y1)*(y2-y1));
 }
 
-// Calculate closest waypoint to current x, y position
+/**
+ * @brief Find closest waypoint to current x, y position
+ * 
+ * @param x component of current position
+ * @param y component of current position
+ * @param maps_x list of x components of the waypoints
+ * @param maps_y list of y components of the waypoints
+ * @return int index of closest waypoint
+ */
 int ClosestWaypoint(double x, double y, const vector<double> &maps_x, 
                     const vector<double> &maps_y) {
   double closestLen = 100000; //large number
@@ -43,7 +61,16 @@ int ClosestWaypoint(double x, double y, const vector<double> &maps_x,
   return closestWaypoint;
 }
 
-// Returns next waypoint of the closest waypoint
+/**
+ * @brief Find next waypoint to current x, y position in the driving direction
+ * 
+ * @param x component of current position 
+ * @param y component of current position
+ * @param theta heading
+ * @param maps_x list of x components of the waypoints
+ * @param maps_y list of y components of the waypoints
+ * @return int 
+ */
 int NextWaypoint(double x, double y, double theta, const vector<double> &maps_x, 
                  const vector<double> &maps_y) {
   int closestWaypoint = ClosestWaypoint(x,y,maps_x,maps_y);
@@ -66,7 +93,16 @@ int NextWaypoint(double x, double y, double theta, const vector<double> &maps_x,
   return closestWaypoint;
 }
 
-// Transform from Cartesian x,y coordinates to Frenet s,d coordinates
+/**
+ * @brief Transform from Cartesian x,y coordinates to Frenet s,d coordinates
+ * 
+ * @param x component of current position 
+ * @param y component of current position
+ * @param theta heading
+ * @param maps_x list of x components of the waypoints
+ * @param maps_y list of y components of the waypoints
+ * @return vector<double> 
+ */
 vector<double> getFrenet(double x, double y, double theta, 
                          const vector<double> &maps_x, 
                          const vector<double> &maps_y) {
@@ -111,7 +147,16 @@ vector<double> getFrenet(double x, double y, double theta,
   return {frenet_s,frenet_d};
 }
 
-// Transform from Frenet s,d coordinates to Cartesian x,y
+/**
+ * @brief Transform from Frenet s,d coordinates to Cartesian x,y
+ * 
+ * @param s distance along the road (Longitudinal Axis)
+ * @param d displacement from longitudinal line (Lateral Axis)
+ * @param maps_s 
+ * @param maps_x list of x components of the waypoints
+ * @param maps_y list of y components of the waypoints
+ * @return vector<double> 
+ */
 vector<double> getXY(double s, double d, const vector<double> &maps_s, 
                      const vector<double> &maps_x, 
                      const vector<double> &maps_y) {
