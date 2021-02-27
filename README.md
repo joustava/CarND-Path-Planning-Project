@@ -77,3 +77,5 @@ Running the supplied `./docs.sh` script will generate html documentations that c
 - [Interesting read about C++ tooling](https://invisible-island.net/personal/lint-tools.html#background)
 - [Debug Macros](https://stackoverflow.com/questions/14251038/debug-macros-in-c)
 - [Modern CMake](https://cliutils.gitlab.io/modern-cmake/)
+- [spline interpolation](https://en.wikipedia.org/wiki/Spline_interpolation)
+- [spline library](https://github.com/ttk592/spline/)

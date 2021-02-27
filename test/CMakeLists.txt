@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.19)
 
-Include(FetchContent)
+include(FetchContent)
 
 FetchContent_Declare(
   Catch2

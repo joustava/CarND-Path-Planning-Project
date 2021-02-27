@@ -1,10 +1,13 @@
-#include "Planner.hpp"
-#include "helpers.h"
 #include <math.h>
 #include <iostream>
 #include <fstream>
 #include <string>
 #include <sstream>
+
+
+#include "Planner.hpp"
+#include "helpers.h"
+#include "spline.h"
 
 Planner::Planner() {
   
