@@ -147,6 +147,9 @@ int main(int argc, char* argv[]) {
               if((check_car_s > car_s) && (check_car_s - car_s) < 30) {
                 // ref_vel = 29.5;
                 too_close = true;
+                if(lane > 0) {
+                  lane = 0;
+                }
               }
 
             }
