@@ -1,5 +1,5 @@
-#ifndef HELPERS_H_
-#define HELPERS_H_
+#ifndef HELPERS_H
+#define HELPERS_H
 
 #include <math.h>
 #include <string>

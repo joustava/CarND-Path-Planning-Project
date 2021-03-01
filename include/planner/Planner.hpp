@@ -1,8 +1,7 @@
-#ifndef PLANNER_H_
-#define PLANNER_H_
+#ifndef PLANNER_HPP
+#define PLANNER_HPP
 
 #include <vector>
-
 
 class Planner {
   private:
@@ -36,6 +35,10 @@ class Planner {
   // Previous path's end s and d values 
   double end_path_s;
   double end_path_d;
+
+  double dist_inc;
+  int lane;
+  double ref_vel;
 
   public:
   Planner();

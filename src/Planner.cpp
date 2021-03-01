@@ -4,13 +4,14 @@
 #include <string>
 #include <sstream>
 
-
-#include "Planner.hpp"
-#include "helpers.h"
-#include "spline.h"
+#include "planner/Planner.hpp"
+// #include "helpers.h"
+// #include "spline.h"
 
 Planner::Planner() {
-  
+  dist_inc = 0.3;
+  lane = 1;
+  ref_vel = 49.5;
 }
 
 void Planner::updateCar(double car_x, double car_y, double car_s, double car_d, double car_yaw, double car_speed) {
@@ -23,42 +24,40 @@ void Planner::updateCar(double car_x, double car_y, double car_s, double car_d, 
 }
 
 
-std::vector<double> Planner::planX() {
-    double dist_inc = 0.5;
-    std::vector<double> next_x_vals;
-    for (int i = 0; i < 50; ++i) {
+// std::vector<double> Planner::planX() {
+//     std::vector<double> next_x_vals;
+//     for (int i = 0; i < 50; ++i) {
 
 
-      double next_s = car_s_ + (i + 1) * dist_inc;
-      double next_d = 6.0;
-      vector<double> xy = getXY(next_s, next_d, map_waypoints_s, map_waypoints_x, map_waypoints_y);      
+//       double next_s = car_s_ + (i + 1) * dist_inc;
+//       double next_d = 6.0;
+//       vector<double> xy = getXY(next_s, next_d, map_waypoints_s, map_waypoints_x, map_waypoints_y);      
       
-      next_x_vals.push_back(xy[0]);
-      // next_y_vals.push_back(car_y+(dist_inc*i)*sin(deg2rad(car_yaw)));
-    }
-    return next_x_vals;
-}
+//       next_x_vals.push_back(xy[0]);
+//       // next_y_vals.push_back(car_y+(dist_inc*i)*sin(deg2rad(car_yaw)));
+//     }
+//     return next_x_vals;
+// }
 
-std::vector<double> Planner::planY() {
-    double dist_inc = 0.5;
-    std::vector<double> next_y_vals;
-    for (int i = 0; i < 50; ++i) {
+// std::vector<double> Planner::planY() {
+//     std::vector<double> next_y_vals;
+//     for (int i = 0; i < 50; ++i) {
 
-      double next_s = car_s_ + (i + 1) * dist_inc;
-      double next_d = 6.0;
-      vector<double> xy = getXY(next_s, next_d, map_waypoints_s, map_waypoints_x, map_waypoints_y); 
-      // next_x_vals.push_back(car_x+(dist_inc*i)*cos(deg2rad(car_yaw)));
-      next_y_vals.push_back(xy[1]);
-    }
-    return next_y_vals;
-}
+//       double next_s = car_s_ + (i + 1) * dist_inc;
+//       double next_d = 6.0;
+//       vector<double> xy = getXY(next_s, next_d, map_waypoints_s, map_waypoints_x, map_waypoints_y); 
+//       // next_x_vals.push_back(car_x+(dist_inc*i)*cos(deg2rad(car_yaw)));
+//       next_y_vals.push_back(xy[1]);
+//     }
+//     return next_y_vals;
+// }
 
 void Planner::load_map(std::string filename) {
   std::cout << "Loading map file: " << filename << std::endl;
 
   std::ifstream in_map_(filename.c_str(), std::ifstream::in);
 
-  string line;
+  std::string line;
   while (std::getline(in_map_, line)) {
     std::istringstream iss(line);
     double x;
