@@ -49,7 +49,7 @@ int main(int argc, char* argv[]) {
   // Planner planner;
   // planner.load_map(argv[1]);
   int lane = 1;
-  double ref_vel = 49.5;
+  double ref_vel = 0.0;
   double dist_inc = 0.3;
 
   std::ifstream in_map_(map_file_.c_str(), std::ifstream::in);
@@ -122,6 +122,50 @@ int main(int argc, char* argv[]) {
 
           // size of prev list of points
           int prev_size = previous_path_x.size();
+
+
+          // COLLISION AVOIDANCE.
+          
+          if(prev_size > 0) {
+            car_s = end_path_s;
+          }
+
+          bool too_close = false;
+
+          for(int i = 0; i < sensor_fusion.size(); i++) {
+            float d = sensor_fusion[i][6];
+
+            if(d < (2+4*lane+2) && d > (2+4*lane - 2)) { // check whole width of road, all lanes for cars.
+              double vx = sensor_fusion[i][3];
+              double vy = sensor_fusion[i][4];
+
+              double check_speed = sqrt(vx*vx + vy+vy);
+              double check_car_s = sensor_fusion[i][5];
+
+              check_car_s += ((double)prev_size*0.02*check_speed);
+
+              if((check_car_s > car_s) && (check_car_s - car_s) < 30) {
+                // ref_vel = 29.5;
+                too_close = true;
+              }
+
+            }
+          }
+
+
+          if(too_close) {
+            ref_vel -= 0.224;
+          } else if(ref_vel < 49.5) {
+            ref_vel += 0.224;
+          }
+
+
+
+
+
+
+
+          // ONE LANE PLANNING
 
           // list if widely spaced waypoints to be connected through a spline
           vector<double> ptsx;
