@@ -2,6 +2,8 @@
 #define PLANNER_HPP
 
 #include <vector>
+#include <nlohmann/json.hpp>
+#include "spline.h"
 
 class Planner {
   private:
@@ -30,30 +32,74 @@ class Planner {
    * @brief previous path data
    * 
    */
-  double previous_path_x;
-  double previous_path_y;
-  // Previous path's end s and d values 
-  double end_path_s;
-  double end_path_d;
-
-  double dist_inc;
-  int lane;
-  double ref_vel;
-
-  public:
-  Planner();
-  ~Planner() = default;
+  nlohmann::json previous_path_x_;
+  double prev_size;
+  nlohmann::json previous_path_y_;
+  
+  /**
+   * @brief The Velocity we aim to drive at
+   * 
+   */
+  static constexpr double const& REF_VEL = 49.5;
 
   /**
+   * @brief Velocity delta to in- or decrease the velocity in steps. 
+   * 
+   */
+  static constexpr double const& DELTA_VEL = 0.224;
+  
+  /**
+   * @brief Lane index 0..2 left to right.
+   * 
+   */
+  int current_lane = 1;
+  
+  double velocity = 0.0;
+  tk::spline spline;
+
+   /**
    * @brief Initializes the planner with Map data from file.
    * 
    * @param filename defaults to "../data/highway_map.csv"
    */
   void load_map(std::string filename);
-  void updateCar(double car_x, double car_y, double car_s, double car_d, double car_yaw, double car_speed);
-  // void updatePath(double previous_path_x, double previous_path_y, double end_path_s, double end_path_d);
-  std::vector<double> planX();
-  std::vector<double> planY();
+
+
+
+  public:
+
+  Planner(std::string filename);
+  ~Planner() = default;
+
+  /**
+   * @brief 
+   * 
+   * @param car_x 
+   * @param car_y 
+   * @param car_s 
+   * @param car_d 
+   * @param car_yaw 
+   * @param car_speed 
+   * @param previous_path_x 
+   * @param previous_path_y 
+   * @param end_path_s 
+   */
+  void update(double car_x, double car_y, double car_s, double car_d, double car_yaw, double car_speed, nlohmann::json previous_path_x, nlohmann::json previous_path_y, double end_path_s);
+  
+  /**
+   * @brief 
+   * 
+   * @param sensor_fusion 
+   */
+  void track(nlohmann::json sensor_fusion);
+  
+  /**
+   * @brief 
+   * 
+   * @param next_x_vals 
+   * @param next_y_vals 
+   */
+  void plan(std::vector<double> &next_x_vals, std::vector<double> &next_y_vals); 
 };
 
 #endif

@@ -31,6 +31,21 @@ link_directories(/usr/local/Cellar/libuv/1.41.0/lib/)
 
 endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin") 
 
+include(FetchContent)
+
+# nlohmann/json
+FetchContent_Declare(
+  json
+  GIT_REPOSITORY https://github.com/ArthurSonzogni/nlohmann_json_cmake_fetchcontent
+  GIT_TAG v3.9.1
+)
+FetchContent_GetProperties(json)
+if(NOT json_POPULATED)
+  FetchContent_Populate(json)
+  add_subdirectory(${json_SOURCE_DIR} ${json_BINARY_DIR} EXCLUDE_FROM_ALL)
+endif()
+
+
 # include CMakeList rules for lib, test and app targets.
 add_subdirectory(src)
 # add_subdirectory(test)
