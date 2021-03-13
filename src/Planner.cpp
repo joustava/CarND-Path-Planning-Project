@@ -7,6 +7,12 @@
 #include "planner/Planner.hpp"
 #include "helpers.h"
 
+enum side {
+  LEFT = -1,
+  FRONT = 0,
+  RIGHT = 1
+};
+
 Planner::Planner(std::string map_file) {
   load_map(map_file);
 }
@@ -32,45 +38,55 @@ void Planner::track(nlohmann::json sensor_fusion) {
   bool car_right = false;
 
   for(int i = 0; i < sensor_fusion.size(); i++) {
-    float d = sensor_fusion[i][6];
+    double d = sensor_fusion[i][6];
     double check_car_s = sensor_fusion[i][5];
     double vx = sensor_fusion[i][3];
     double vy = sensor_fusion[i][4];
 
-    if(d < 0) continue;
     double check_speed = sqrt(vx*vx + vy+vy);
     check_car_s += ((double)prev_size * 0.02 * check_speed);
 
     // Check for car in current lane
-    if(d < (4 + 4 * current_lane) && d > (4 * current_lane)) {
-      if((check_car_s - car_s_ > 0) && (check_car_s - car_s_) <= 30) {
+    if(d < (4 + 4 * current_lane + 0) && d > (4 * current_lane + 0)) {
+      auto s_diff = check_car_s - car_s_;
+      if((s_diff > - SAFE_DIST_REAR) && (s_diff < SAFE_DIST_FRONT)) {
+    
         car_front = true;
       }
     }
 
+    // car_front = proximity(check_car_s, d, FRONT);
+
     // Check for car in left lane
     if(d < (4 + 4 * (current_lane - 1)) && d > (4 * (current_lane - 1))) {
       auto s_diff = check_car_s - car_s_;
-      if ((s_diff > - 20) && (s_diff < 30)) {
+      if ((s_diff > - SAFE_DIST_REAR) && (s_diff < SAFE_DIST_FRONT)) {
+    
         car_left = true;
       }
     }
 
+    // car_left = proximity(check_car_s, d, LEFT);
+
     // Check for car in right lane
     if(d < (4 + 4 * (current_lane + 1)) && d > (4 * (current_lane + 1))) {
       auto s_diff = check_car_s - car_s_;
-      if ((s_diff > - 20) && (s_diff < 30)) {
+      if ((s_diff > - SAFE_DIST_REAR) && (s_diff < SAFE_DIST_FRONT)) {
+    
         car_right = true;
       }
     }
+    // car_right = proximity(check_car_s, d, RIGHT);
+
   }
 
   if(car_front) {
-    velocity -= DELTA_VEL;
     if (!car_left && current_lane > 0) {
       current_lane--;
     } else if (!car_right && current_lane < 2) {
       current_lane++;
+    } else {
+      velocity -= DELTA_VEL;
     }
       
   } else {
@@ -78,6 +94,7 @@ void Planner::track(nlohmann::json sensor_fusion) {
       current_lane = 1;
     } 
     if(velocity < REF_VEL) velocity += DELTA_VEL;
+  
   }
 }
 
@@ -89,6 +106,7 @@ void Planner::plan(std::vector<double> &next_x_vals, std::vector<double> &next_y
   double ref_y = car_y_;
   double ref_yaw = deg2rad(car_yaw_);
 
+  // Determine a fitting starting point for the new path.
   if(prev_size < 2) {
     // use car as starting ref when list is small.
     // tangent points with respect to car.
@@ -120,7 +138,8 @@ void Planner::plan(std::vector<double> &next_x_vals, std::vector<double> &next_y
     ptsy.push_back(ref_y);
   }
 
-  // create points in Frenet, 30m spaced apart.
+  // create points in Frenet, 30m spaced apart., these are anchor points that will be used later
+  // to interpolate the points inbetween with the spline library.
   vector<double> next_wp0 = getXY(car_s_ + 30, (2+4*current_lane), map_waypoints_s, map_waypoints_x, map_waypoints_y);
   vector<double> next_wp1 = getXY(car_s_ + 60, (2+4*current_lane), map_waypoints_s, map_waypoints_x, map_waypoints_y);
   vector<double> next_wp2 = getXY(car_s_ + 90, (2+4*current_lane), map_waypoints_s, map_waypoints_x, map_waypoints_y);
@@ -142,6 +161,7 @@ void Planner::plan(std::vector<double> &next_x_vals, std::vector<double> &next_y
     ptsy[i] = (shift_x * sin(0-ref_yaw) + shift_y * cos(0 - ref_yaw)); 
   }
 
+  // update the spline with the information it needs to interpolate
   spline.set_points(ptsx, ptsy);
 
   for(int i = 0; i < previous_path_x_.size(); i++) {
@@ -176,6 +196,16 @@ void Planner::plan(std::vector<double> &next_x_vals, std::vector<double> &next_y
       next_x_vals.push_back(x_point);
       next_y_vals.push_back(y_point);
   }
+}
+
+bool Planner::proximity(double s, double d, int direction) {
+  if(d < (4 + 4 * (current_lane + direction)) && d > (4 * (current_lane + direction))) {
+    auto s_diff = s - car_s_;
+    if ((s_diff > - SAFE_DIST_REAR) && (s_diff < SAFE_DIST_FRONT)) {
+      return true;
+    }
+  }
+  return false;
 }
 
 void Planner::load_map(std::string filename) {

@@ -37,6 +37,13 @@ class Planner {
   nlohmann::json previous_path_y_;
   
   /**
+   * @brief
+   * 
+   */
+  static constexpr double const& SAFE_DIST_FRONT = 30.0;
+  static constexpr double const& SAFE_DIST_REAR = 20.0;
+
+  /**
    * @brief The Velocity we aim to drive at
    * 
    */
@@ -64,7 +71,16 @@ class Planner {
    */
   void load_map(std::string filename);
 
-
+  /**
+   * @brief Check for cars in direction
+   * 
+   * @param s frenet param of detected car
+   * @param d frenet param of detected car
+   * @param direction side to check
+   * @return true car detected at side
+   * @return false no car detected at side
+   */
+  bool proximity(double s, double d, int side);
 
   public:
 
