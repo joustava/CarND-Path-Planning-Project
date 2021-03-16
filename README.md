@@ -23,13 +23,16 @@ The project aims to follow a [Modern CMake](https://cliutils.gitlab.io/modern-cm
 
 ## Running the Code
 
+For dependency setup on your environment, follow these [instructions](https://github.com/udacity/CarND-Path-Planning-Project#dependencies).
 This project involves the Term 3 Simulator which can be downloaded [here](https://github.com/udacity/self-driving-car-sim/releases/tag/T3_v1.2)
-Then with the running simulator this PID controller can be build and run with
+Then with the running simulator this project can be build and run with
 
 ```bash
 ./build.sh
 ./run.sh
 ```
+
+NOTE: This project was **not** build to support Docker.
 
 ## Testing the code
 
@@ -41,7 +44,7 @@ To run them:
 ./test.sh
 ```
 
-## Extra
+## Extra (not needed for building or running)
 
 ### CppCheck
 
