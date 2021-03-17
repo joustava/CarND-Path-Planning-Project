@@ -6,9 +6,11 @@ The required writeup can be read from [WRITEUP](./WRITEUP.md).
 
 ## Prerequisites
 
-For dependency setup, follow these [instructions](https://github.com/udacity/CarND-Path-Planning-Project#dependencies) 
+Clone this project.
 
-Then add the [submodules](https://git-scm.com/book/en/v2/Git-Tools-Submodules) after cloning, this is typically done once with `git submodule update --init` ran from the project root directory. This will add:
+Then for dependency setup, follow these [instructions](https://github.com/udacity/CarND-Path-Planning-Project#dependencies) 
+
+Add the [submodules](https://git-scm.com/book/en/v2/Git-Tools-Submodules) after cloning, this is typically done once with `git submodule update --init` ran from the project root directory. This will add:
 
 - [Eigen](https://eigen.tuxfamily.org/dox-devel/index.html) as 'production' dependency
 
@@ -25,6 +27,12 @@ The project aims to follow a [Modern CMake](https://cliutils.gitlab.io/modern-cm
 
 For dependency setup on your environment, follow these [instructions](https://github.com/udacity/CarND-Path-Planning-Project#dependencies).
 This project involves the Term 3 Simulator which can be downloaded [here](https://github.com/udacity/self-driving-car-sim/releases/tag/T3_v1.2)
+
+Clone this repo and initialise git submodules with
+```bash
+git submodule update --init # only once
+```
+
 Then with the running simulator this project can be build and run with
 
 ```bash
