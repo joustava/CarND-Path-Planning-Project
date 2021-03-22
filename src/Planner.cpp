@@ -38,7 +38,7 @@ void Planner::track(nlohmann::json sensor_fusion) {
   bool car_right = false;
 
   for(int i = 0; i < sensor_fusion.size(); i++) {
-    double d = sensor_fusion[i][6];
+    double check_car_d = sensor_fusion[i][6];
     double check_car_s = sensor_fusion[i][5];
     double vx = sensor_fusion[i][3];
     double vy = sensor_fusion[i][4];
@@ -46,40 +46,32 @@ void Planner::track(nlohmann::json sensor_fusion) {
     double check_speed = sqrt(vx*vx + vy+vy);
     check_car_s += ((double)prev_size * 0.02 * check_speed);
 
+    int check_car_lane = -1;
+
+    if(check_car_d > 0 && check_car_d < 4) {
+      check_car_lane = 0;
+    } else if (check_car_d > 4 && check_car_d < 8) {
+      check_car_lane = 1;
+    } else if(check_car_d > 8 && check_car_d < 12) {
+      check_car_lane = 2;
+    }
+
+    if(check_car_lane < 0) continue; // no need to try and check this car further, it should have been in one of the lanes.
+
     // Check for car in current lane
-    if(d < (4 + 4 * current_lane + 0) && d > (4 * current_lane + 0)) {
-      auto s_diff = check_car_s - car_s_;
-      if((s_diff > - SAFE_DIST_REAR) && (s_diff < SAFE_DIST_FRONT)) {
-    
-        car_front = true;
-      }
-    }
-
-    // car_front = proximity(check_car_s, d, FRONT);
-
+    if(check_car_lane == current_lane) {
+      car_front |= check_car_s > car_s_ && check_car_s - car_s_ < SAFE_DIST_FRONT;    
+    } 
     // Check for car in left lane
-    if(d < (4 + 4 * (current_lane - 1)) && d > (4 * (current_lane - 1))) {
-      auto s_diff = check_car_s - car_s_;
-      if ((s_diff > - SAFE_DIST_REAR) && (s_diff < SAFE_DIST_FRONT)) {
-    
-        car_left = true;
-      }
+    else if(check_car_lane - current_lane == -1) {
+      car_left |= check_car_s - SAFE_DIST_FRONT < car_s_ && check_car_s + SAFE_DIST_FRONT > car_s_;
     }
-
-    // car_left = proximity(check_car_s, d, LEFT);
-
     // Check for car in right lane
-    if(d < (4 + 4 * (current_lane + 1)) && d > (4 * (current_lane + 1))) {
-      auto s_diff = check_car_s - car_s_;
-      if ((s_diff > - SAFE_DIST_REAR) && (s_diff < SAFE_DIST_FRONT)) {
-    
-        car_right = true;
-      }
+    else if(check_car_lane - current_lane == 1) {
+      car_right |= check_car_s - SAFE_DIST_FRONT < car_s_ && check_car_s + SAFE_DIST_FRONT >  car_s_;
     }
-    // car_right = proximity(check_car_s, d, RIGHT);
-
   }
-
+  
   if(car_front) {
     if (!car_left && current_lane > 0) {
       current_lane--;
@@ -196,16 +188,6 @@ void Planner::plan(std::vector<double> &next_x_vals, std::vector<double> &next_y
       next_x_vals.push_back(x_point);
       next_y_vals.push_back(y_point);
   }
-}
-
-bool Planner::proximity(double s, double d, int direction) {
-  if(d < (4 + 4 * (current_lane + direction)) && d > (4 * (current_lane + direction))) {
-    auto s_diff = s - car_s_;
-    if ((s_diff > - SAFE_DIST_REAR) && (s_diff < SAFE_DIST_FRONT)) {
-      return true;
-    }
-  }
-  return false;
 }
 
 void Planner::load_map(std::string filename) {

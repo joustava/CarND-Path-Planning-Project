@@ -28,6 +28,7 @@ class Planner {
   double car_yaw_;
   double car_speed_;
 
+
   /**
    * @brief previous path data
    * 
@@ -72,15 +73,12 @@ class Planner {
   void load_map(std::string filename);
 
   /**
-   * @brief Check for cars in direction
+   * @brief Detect proximity of other cars.
    * 
    * @param s frenet param of detected car
    * @param d frenet param of detected car
-   * @param direction side to check
-   * @return true car detected at side
-   * @return false no car detected at side
    */
-  bool proximity(double s, double d, int side);
+  void proximityInLane(double s, double d);
 
   public:
 
@@ -88,7 +86,7 @@ class Planner {
   ~Planner() = default;
 
   /**
-   * @brief 
+   * @brief Update the planner with the latest car localization data.
    * 
    * @param car_x 
    * @param car_y 
@@ -103,14 +101,14 @@ class Planner {
   void update(double car_x, double car_y, double car_s, double car_d, double car_yaw, double car_speed, nlohmann::json previous_path_x, nlohmann::json previous_path_y, double end_path_s);
   
   /**
-   * @brief 
+   * @brief Track proximity of other traffic.
    * 
    * @param sensor_fusion 
    */
   void track(nlohmann::json sensor_fusion);
   
   /**
-   * @brief 
+   * @brief Plan the next section of the path to take.
    * 
    * @param next_x_vals 
    * @param next_y_vals 
