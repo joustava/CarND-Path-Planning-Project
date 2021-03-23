@@ -12,17 +12,15 @@ The implementation of the Planner can be found from `./src/Planner.cpp` and its 
 
 ### Update car state
 
-After a Planner object is initialized with data from the map it will need to be updated with the data from the car, this happends in the planner `update` function. 
-Here we simply update the car state and check if there was data from a previously planned path, this old path data can then be used to extend the new path from
-in order to have smooth trajectories.
-
+After a Planner object is initialized with data from the map it will need to be updated with the data from the car, this happends in the planner `update` function on each simulator update to the WebSocket server.
+Here we simply update the car state and check if there was data from a previously planned path, this old path data can then be used to extend the new path from in order to have smooth trajectories.
 ### Track other traffic
 
-When the car state has been updated, we start checking for other members on the road which might be in front or left or right of our car. We do this so that the planner can make safe decisions regarding speed and lane changes. This is done within the `track` function. The track function checks each traffic member driving in the same side of the road as our simulated car. For each member car it will check from its Frenet coordinates in which lane it is and if it is in proximity of our car. With this information, our cars target speed and target lane is updated.
+When the car state has been updated, we start checking for other members on the road which might be in front, behind or left or right of our car. We do this so that the planner can make safe decisions regarding speed and lane changes. This is done within the `track` function. The track function checks each traffic member driving in the same side of the road as our simulated car. For each member car it will check from its Frenet coordinates in which lane it is and if it is in proximity of our car. With this information, our cars target speed and target lane is updated.
 
 ```bash
-
-        | 0 |  1 | 2 |
+# Proximity means that there is at least one car within car_s +/- SAFE_DISTANCE.
+        | 0 |  1 | 2 | lane numbers
 + prox  |   |    |   | car_s + SAFE_DISTANCE
         |   |    |   |
         |   |  x |   | car_s
@@ -30,7 +28,6 @@ When the car state has been updated, we start checking for other members on the 
 - prox  |   |    |   | car_s - SAFE_DISTANCE
 
 ```
-
 
 ### Plan new path
 
@@ -43,7 +40,7 @@ With the help of previously found target lane and speed a new path will be build
 - [x] The code compiles correctly.
 - [x] The car is able to drive at least 4.32 miles without incident.
 - [x] The car drives according to the speed limit.
-- [x] Max Acceleration and Jerk are not Exceeded. 
+- [x] Max Acceleration and Jerk are not Exceeded.
 - [ ] Car does not have collisions.
 - [x] The car stays in its lane, except for the time between changing lanes.
 - [x] The car is able to change lanes.
