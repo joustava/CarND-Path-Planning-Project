@@ -105,7 +105,7 @@ class Planner {
    * 
    * @param sensor_fusion 
    */
-  void track(nlohmann::json sensor_fusion);
+  void track(const nlohmann::json &sensor_fusion);
   
   /**
    * @brief Plan the next section of the path to take.

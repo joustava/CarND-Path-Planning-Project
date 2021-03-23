@@ -22,12 +22,20 @@ When the car state has been updated, we start checking for other members on the 
 
 ```bash
 
+        | 0 |  1 | 2 |
++ prox  |   |    |   | car_s + SAFE_DISTANCE
+        |   |    |   |
+        |   |  x |   | car_s
+        |   |    |   |
+- prox  |   |    |   | car_s - SAFE_DISTANCE
+
 ```
+
 
 ### Plan new path
 
 Once we have all the needed tracking information, path planning can start calculating a new path. This is done in the `plan` function of the planner.
-With the help of previously found target lane and speed a new path will be build upon previous coordinates or our current car location (this depends on how much the previous path waypoints have ben traversed in the simulator). 
+With the help of previously found target lane and speed a new path will be build upon previous coordinates or our current car location (this depends on how much the previous path waypoints have ben traversed in the simulator). A few point are chosen for the new path depending on lat know location and lane information. Together with the spline function new waypoints are interpolated and send back to the simulator.
 
 
 ## Checklist
