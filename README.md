@@ -4,42 +4,24 @@
 
 The required Model Documentation can be read from [ModelDocumentation](./ModelDocumentation.md).
 
-## Prerequisites
+## Build and Run code
 
-1. Clone this project.
-
-2. Then for dependency setup, follow these [instructions](https://github.com/udacity/CarND-Path-Planning-Project#dependencies) 
-
-3. Add the [submodules](https://git-scm.com/book/en/v2/Git-Tools-Submodules) after cloning, by running from the project root directory
+0. Clone this repo with git
 ```bash
-git submodule update --init
+git clone git@github.com:joustava/CarND-Path-Planning-Project.git
 ```
+1. Make sure you meet the dependency requirement [instructions](https://github.com/udacity/CarND-Path-Planning-Project#dependencies).
 
-This will add [Eigen](https://eigen.tuxfamily.org/dox-devel/index.html) to the project via a git submodule as 'production' dependency.
+2. This project involves the Term 3 Simulator which can be downloaded [here](https://github.com/udacity/self-driving-car-sim/releases/tag/T3_v1.2). Once unzipped you might need to change permissions of the simulator executable by running: `chmod u+x term3_sim_mac/term3_sim.app/Contents/MacOS/term3_sim_mac` from the folder you've extracted it.
 
-Eigen was added to the project by using `git submodule add https://gitlab.com/libeigen/eigen.git extern/eigen` and then adding required config to `./CMakeLists.txt`. See running section for making it available to build step.
-
-## Project structure
-
-The project aims to follow a [Modern CMake](https://cliutils.gitlab.io/modern-cmake/) setup. It has several targets, an app target containing the complete application (`./app`), a Planner library (`./src` and `./include`) and the tests (`./test`). Each part has its own `CMakeList.txt` file which come together in the main `CMakeList.txt` found in the root of the project.
-
-```bash
-```
-
-## Running the Code
-
-I'll reiterate the setup procedure for clarity:
-
-0. clone this repo with git
-1. For dependency setup on your environment, make sure you meet these [instructions](https://github.com/udacity/CarND-Path-Planning-Project#dependencies).
-2. This project involves the Term 3 Simulator which can be downloaded [here](https://github.com/udacity/self-driving-car-sim/releases/tag/T3_v1.2)
-3. **IMPORTANT:** Initialise git submodules by running (from project root) 
+3. **IMPORTANT:** Initialise git submodules by running (from project root).
 
 ```bash
 git submodule update --init # only once
 ```
+This will add [Eigen](https://eigen.tuxfamily.org/dox-devel/index.html) to the project via a git submodule as 'production' dependency.
 
-4. Then with the running simulator this project can be build and run with
+4. Then with the running simulator this project can be build and run with the following scripts
 
 ```bash
 ./build.sh
@@ -57,6 +39,10 @@ To run them:
 ./build.sh
 ./test.sh
 ```
+
+## Project structure
+
+The project aims to follow a [Modern CMake](https://cliutils.gitlab.io/modern-cmake/) setup. It has several targets, an app target containing the complete application (`./app`), a Planner library (`./src` and `./include`) and the tests (`./test`). Each part has its own `CMakeList.txt` file which come together in the main `CMakeList.txt` found in the root of the project.
 
 ## Extra (not needed for building or running)
 
@@ -88,8 +74,10 @@ brew install graphviz
 
 Running the supplied `./docs.sh` script will generate html documentations that can be viewed (opened by script) in the browser.
 
-```bash
-```
+
+### Eigen as submodule
+
+Eigen was added to the project by using `git submodule add https://gitlab.com/libeigen/eigen.git extern/eigen` and then adding required config to `./CMakeLists.txt`. See running section for making it available to build step.
 
 ## Resources
 

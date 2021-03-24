@@ -50,5 +50,3 @@ With the help of previously found target lane and speed a new path will be build
 - [x] The car stays in its lane, except for the time between changing lanes.
 - [x] The car is able to change lanes.
 - [x] There is a reflection on how to generate paths.
-
-## Resources
