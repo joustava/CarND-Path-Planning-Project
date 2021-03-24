@@ -2,7 +2,7 @@
 
 > This repository contains the work for the Path Planning project in the Self-Driving Car Engineer Nanodegree Program of Udacity.
 
-The required writeup can be read from [WRITEUP](./WRITEUP.md).
+The required Model Documentation can be read from [ModelDocumentation](./ModelDocumentation.md).
 
 ## Prerequisites
 
