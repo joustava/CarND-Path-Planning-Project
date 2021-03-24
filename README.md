@@ -15,7 +15,7 @@ The required writeup can be read from [WRITEUP](./WRITEUP.md).
 git submodule update --init
 ```
 
-- [Eigen](https://eigen.tuxfamily.org/dox-devel/index.html) as 'production' dependency
+This will add [Eigen](https://eigen.tuxfamily.org/dox-devel/index.html) to the project via a git submodule as 'production' dependency.
 
 Eigen was added to the project by using `git submodule add https://gitlab.com/libeigen/eigen.git extern/eigen` and then adding required config to `./CMakeLists.txt`. See running section for making it available to build step.
 
