@@ -30,10 +30,10 @@ The project aims to follow a [Modern CMake](https://cliutils.gitlab.io/modern-cm
 
 I'll reiterate the setup procedure for clarity:
 
-0. clone this repo
+0. clone this repo with git
 1. For dependency setup on your environment, make sure you meet these [instructions](https://github.com/udacity/CarND-Path-Planning-Project#dependencies).
 2. This project involves the Term 3 Simulator which can be downloaded [here](https://github.com/udacity/self-driving-car-sim/releases/tag/T3_v1.2)
-3. Initialise git submodules with **IMPORTANT**
+3. **IMPORTANT:** Initialise git submodules by running (from project root) 
 
 ```bash
 git submodule update --init # only once
